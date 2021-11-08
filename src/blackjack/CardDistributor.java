@@ -21,4 +21,10 @@ public class CardDistributor {
     public void promptLoss(){
 
     }
+    public void shuffle() {
+
+    }
+    public void dealCards() {
+
+    }
 }
