@@ -91,6 +91,11 @@ public class View extends JFrame {
                 framePlay.setVisible(true);
                 frameHome.setVisible(false);
             });//displays playing table if play button is clicked
+
+            distributor.addChangeListener(e -> { //Observer pattern
+                //changeListener will be notified when the game is over
+                //code here update UI for when the game is over by adding showing two buttons: play again or return to homescreen
+            });
         } catch (Exception e) {
             System.out.println("file not found!");
         }
