@@ -19,11 +19,10 @@ public class Controller {
                 message = queue.take();
             } catch (InterruptedException ignored){ }
             if(message.getClass() == HitMessage.class){
-                Card c = distributor.hit();
-
+                distributor.playerHit();
             }
             else if(message.getClass() == StandMessage.class){
-
+                distributor.playDealer();
             }
         }
     }
