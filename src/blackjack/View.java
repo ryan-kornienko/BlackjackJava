@@ -84,7 +84,7 @@ public class View extends JFrame {
             framePlay.add(buttonStand);
             framePlay.add(labelPlay);
             framePlay.setLayout(null);
-            framePlay.setSize(700, 500);//size of instructions
+            framePlay.setSize(700, 500);//size of playing table
             framePlay.setResizable(false);
             framePlay.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             playButton.addActionListener(e-> {
@@ -92,9 +92,11 @@ public class View extends JFrame {
                 frameHome.setVisible(false);
             });//displays playing table if play button is clicked
 
-            distributor.addChangeListener(e -> { //Observer pattern
-                //changeListener will be notified when the game is over
-                //code here update UI for when the game is over by adding showing two buttons: play again or return to homescreen
+
+            distributor.addChangeListener(e -> { //Observer pattern, changeListener will be notified when the game is over
+                JLabel labelResult = new JLabel(distributor.getResult()); //create a label that shows the result of the game
+                labelResult.setBounds(350, 100, 200, 150);
+                //Add two buttons: play again or return to homescreen
             });
         } catch (Exception e) {
             System.out.println("file not found!");
