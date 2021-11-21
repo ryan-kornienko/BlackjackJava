@@ -1,6 +1,10 @@
 package blackjack;
 
+import org.junit.Test;
+
 import javax.swing.*;
+import java.awt.*;
+import java.util.Collections;
 import java.util.concurrent.BlockingQueue;
 
 public class View extends JFrame {
@@ -80,8 +84,34 @@ public class View extends JFrame {
                 } catch(InterruptedException ignored){ }
             });
 
+
+           distributor.initialization();
+          /*  System.out.println(distributor.getPlayerHand().get(0));
+            JLabel PlayerCurrentHand = new JLabel("lol");
+            PlayerCurrentHand.setBounds(400, 100, 121, 34);*/
+
+            JLabel DealerTotalHandValue = new JLabel("Dealer Total Hand: "+distributor.getTotal(distributor.getDealerHand()));//displays dealers total hand
+            DealerTotalHandValue.setBounds(400, 23, 121, 34);
+            DealerTotalHandValue.setForeground(Color.YELLOW);
+            JLabel playersTotalHandValue = new JLabel("Player Total Hand: "+distributor.getTotal(distributor.getPlayerHand()));//displays players total hand
+            playersTotalHandValue.setBounds(40, 23, 121, 34);
+            playersTotalHandValue.setForeground(Color.YELLOW);
+
+
+
+            distributor.addChangeListener(e -> { //Observer pattern, changeListener will be notified when the game is over
+                JLabel labelResult = new JLabel(distributor.getResult()); //create a label that shows the result of the game
+                labelResult.setBounds(350, 100, 200, 150);
+                //Add two buttons: play again or return to homescreen
+
+
+            });
+
             framePlay.add(buttonHit);
             framePlay.add(buttonStand);
+            framePlay.add(playersTotalHandValue);
+            framePlay.add(DealerTotalHandValue);
+          //  framePlay.add(PlayerCurrentHand);
             framePlay.add(labelPlay);
             framePlay.setLayout(null);
             framePlay.setSize(700, 500);//size of playing table
@@ -91,13 +121,6 @@ public class View extends JFrame {
                 framePlay.setVisible(true);
                 frameHome.setVisible(false);
             });//displays playing table if play button is clicked
-
-
-            distributor.addChangeListener(e -> { //Observer pattern, changeListener will be notified when the game is over
-                JLabel labelResult = new JLabel(distributor.getResult()); //create a label that shows the result of the game
-                labelResult.setBounds(350, 100, 200, 150);
-                //Add two buttons: play again or return to homescreen
-            });
         } catch (Exception e) {
             System.out.println("file not found!");
         }
