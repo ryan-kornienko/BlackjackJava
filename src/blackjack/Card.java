@@ -3,11 +3,9 @@ package blackjack;
 public class Card {
     private char cardFace;
     private int value;
-    private boolean isAceChanged;
 
     public Card(char cardFace) throws Exception {
         this.cardFace = cardFace;
-        isAceChanged = false;
         switch (cardFace) {
             case '1':
                 value = 1;

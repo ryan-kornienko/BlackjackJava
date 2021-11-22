@@ -94,31 +94,41 @@ public class CardDistributor {
     }
 
     public static void main(String[] args) throws Exception {
-        CardDistributor distributor = new CardDistributor();
-        distributor.initialization();
-        System.out.println("Player Hand: " + distributor.getPlayerHand());
-        System.out.println("Player total: " + distributor.getTotal(distributor.getPlayerHand()));
+        boolean playAgain = true;
+        while (playAgain) {
+            CardDistributor distributor = new CardDistributor();
+            distributor.initialization();
+            System.out.println("Player Hand: " + distributor.getPlayerHand());
+            System.out.println("Player total: " + distributor.getTotal(distributor.getPlayerHand()));
 
-        System.out.println("Dealer First Card: " + distributor.getDealerHand().get(0));
-        System.out.println("Enter H for hit S for stand");
-        Scanner s = new Scanner(System.in);
-        String choice = s.next();
-        while(!choice.equals("S")) {
-            if (choice.equals("H")) {
-                distributor.playerHit();
-                System.out.println("*HIT*\nNew Player Hand: " + distributor.getPlayerHand());
-                System.out.println("New Player total: " + distributor.getTotal(distributor.getPlayerHand()));
-                if(distributor.getTotal(distributor.getPlayerHand()) > 21)
-                    break;
+            System.out.println("Dealer First Card: " + distributor.getDealerHand().get(0));
+            System.out.println("Enter H for hit S for stand");
+            Scanner s = new Scanner(System.in);
+            String choice = s.next();
+            while (!choice.equals("S")) {
+                if (choice.equals("H")) {
+                    distributor.playerHit();
+                    System.out.println("*HIT*\nNew Player Hand: " + distributor.getPlayerHand());
+                    System.out.println("New Player total: " + distributor.getTotal(distributor.getPlayerHand()));
+                    if (distributor.getTotal(distributor.getPlayerHand()) > 21)
+                        break;
+                }
+                choice = s.next();
             }
-            choice = s.next();
+            System.out.println("Final Player total: " + distributor.getTotal(distributor.getPlayerHand()));
+            if(distributor.getTotal(distributor.getPlayerHand()) <= 21) {
+                System.out.println("Dealer Hand: " + distributor.getDealerHand());
+                System.out.println("Dealer total: " + distributor.getTotal(distributor.getDealerHand()));
+                distributor.playDealer();
+                System.out.println("Final Dealer Hand: " + distributor.getDealerHand());
+                System.out.println("Final Dealer total: " + distributor.getTotal(distributor.getDealerHand()));
+            }
+            System.out.println(distributor.getResult());
+            System.out.println("Play Again?\nY or N");
+            if(s.next().equals("N")){
+                playAgain = false;
+            }
         }
-        System.out.println("Final Player total: " + distributor.getTotal(distributor.getPlayerHand()));
-        System.out.println("Dealer Hand: " + distributor.getDealerHand());
-        System.out.println("Dealer total: " + distributor.getTotal(distributor.getDealerHand()));
-        distributor.playDealer();
-        System.out.println("Final Dealer Hand: " + distributor.getDealerHand());
-        System.out.println("Final Dealer total: " + distributor.getTotal(distributor.getDealerHand()));
-        System.out.print(distributor.getResult());
+        System.out.println("Thank you for playing");
     }
 }
