@@ -215,4 +215,16 @@ public class View extends JFrame {
         char face = c.getCardFace();
     }*/
 }
+    class view {
+
+        public void win() {
+        }
+
+        public void loss() {
+        }
+
+        public void draw() {
+        }
+    }
+
 
