@@ -1,6 +1,5 @@
 package blackjack;
 
 public interface Message {
+    String value();
 }
-class HitMessage implements Message{}
-class StandMessage implements Message{}

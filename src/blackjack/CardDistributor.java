@@ -40,6 +40,7 @@ public class CardDistributor {
         playerHand.add(deck.remove(randomizer.nextInt(deck.size()))); //player is dealt a random card from the deck which is removed
         if(getTotal(playerHand) > 21) //checks if the total of the player's hand is over 21
             calcResult(); //if their hand is over 21, then the game is over and the program calculates the result (automatic loss)
+        System.out.println("CardDistributor Hit");
     }
 
     public int getTotal(ArrayList<Card> cards) {

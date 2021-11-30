@@ -6,25 +6,25 @@ import java.util.Random;
 import java.util.concurrent.BlockingQueue;
 
 public class View extends JFrame {
-    private JFrame frameHome;
+    public JFrame frameHome;
     private JButton playButton;
     private JButton howtoplayButton;
 
-    private JFrame frameInstructions;
+    public JFrame frameInstructions;
     private JLabel label;
     private JLabel labelInstructions;
 
-    private JFrame framePlay;
+    public JFrame framePlay;
     private JLabel labelPlay;
     private JButton buttonHit;
     private JButton buttonStand;
 
-    private BlockingQueue<Message> queue;
     private CardDistributor distributor;
 
-    public View(BlockingQueue<Message> queue, CardDistributor distributor) {
-        try {
-            this.queue = queue;
+    private int playerIndex = 0;
+    private int playerCardX = 150;
+
+    public View(BlockingQueue<Message> queue, CardDistributor distributor) throws Exception {
             this.distributor = distributor;
             //Homescreen frame
             frameHome = new JFrame("BlackJack");
@@ -65,43 +65,29 @@ public class View extends JFrame {
             ImageIcon bjTable = new ImageIcon("bjtable.jpg");//table picture
             labelPlay = new JLabel(bjTable);
             labelPlay.setBounds(-85, -40, 850, 550);//size of background picture
-            buttonHit = new JButton("Hit!");//hit buttn
+            buttonHit = new JButton("Hit!");//hit button
             buttonHit.setBounds(190, 365, 125, 50);//dimensions of play button
             buttonHit.addActionListener(e -> {
-                try {
-                    HitMessage msg = new HitMessage();
-                    queue.put(msg);
-                } catch (InterruptedException ignored) {
-                }
+                HitMessage msg = new HitMessage();
+                try { queue.put(msg); }
+                catch (InterruptedException ignored) { System.out.println("Error");}
+                System.out.println(distributor.getPlayerHand());
+                System.out.println(distributor.getResult());
+                System.out.println(distributor.getPlayerHand().size());
+                System.out.println(playerIndex);
+                if(distributor.getPlayerHand().size() > playerIndex)
+                    playerHit();
             });
             buttonStand = new JButton("Stand!");//stand button
             buttonStand.setBounds(380, 365, 125, 50);//dimensions of play button
             buttonStand.addActionListener(e -> {
-                try {
-                    StandMessage msg = new StandMessage();
-                    queue.put(msg);
-                } catch (InterruptedException ignored) {
-                }
+                StandMessage msg = new StandMessage();
+                try { queue.put(msg); }
+                catch (InterruptedException ignored) { }
             });
 
             distributor.initialization();
-
-
-            //displays Player card 1
-            String cardValue1 = distributor.getPlayerHand().get(0).toString();
-            System.out.println(cardValue1);
-            ImageIcon HandOne = null;
-            ImageIcon setTwos = new ImageIcon(DisplayCard(cardValue1, HandOne));
-            JLabel PlayerCurrentHand1 = new JLabel(setTwos);
-            PlayerCurrentHand1.setBounds(250, 240, 90, 115);
-
-            //displays Player card 2
-            String cardValue2 = distributor.getPlayerHand().get(1).toString();//grabs players second hand
-            System.out.println(cardValue2);
-            ImageIcon HandTwo = null;
-            ImageIcon set2Hand = new ImageIcon(DisplayCard(cardValue2, HandTwo));
-            JLabel PlayerCurrentHand2 = new JLabel(set2Hand);
-            PlayerCurrentHand2.setBounds(350, 240, 90, 115);
+            initializePlayerHand();
 
             //displays Dealer card1
             String dealerCardValue1 = distributor.getDealerHand().get(0).toString();//grabs dealers first hand
@@ -131,8 +117,6 @@ public class View extends JFrame {
             framePlay.add(buttonStand);
             framePlay.add(playersTotalHandValue);
             framePlay.add(DealerTotalHandValue);
-            framePlay.add(PlayerCurrentHand1);
-            framePlay.add(PlayerCurrentHand2);
             framePlay.add(DealerHand1);
             framePlay.add(labelPlay);
             framePlay.setLayout(null);
@@ -143,9 +127,7 @@ public class View extends JFrame {
                 framePlay.setVisible(true);
                 frameHome.setVisible(false);
             });//displays playing table if play button is clicked
-        } catch (Exception e) {
-            System.out.println("file not found!");
-        }
+
     }
 
     public Image DisplayCard(String cardValue, ImageIcon Hand) {
@@ -210,6 +192,40 @@ public class View extends JFrame {
         }
         return Hand.getImage().getScaledInstance(84, 115, Image.SCALE_DEFAULT);
 
+    }
+
+    public void initializePlayerHand(){
+        playerCardX = 150;
+        //displays Player card 1
+        String cardValue1 = distributor.getPlayerHand().get(playerIndex).toString();
+        System.out.println(cardValue1);
+        ImageIcon HandOne = null;
+        ImageIcon setTwos = new ImageIcon(DisplayCard(cardValue1, HandOne));
+        JLabel PlayerCurrentHand1 = new JLabel(setTwos);
+        PlayerCurrentHand1.setBounds(playerCardX, 240, 90, 115);
+        playerIndex++;
+        playerCardX += 100;
+
+        //displays Player card 2
+        String cardValue2 = distributor.getPlayerHand().get(playerIndex).toString();//grabs players second hand
+        System.out.println(cardValue2);
+        ImageIcon HandTwo = null;
+        ImageIcon set2Hand = new ImageIcon(DisplayCard(cardValue2, HandTwo));
+        JLabel PlayerCurrentHand2 = new JLabel(set2Hand);
+        PlayerCurrentHand2.setBounds(playerCardX, 240, 90, 115);
+        framePlay.add(PlayerCurrentHand1);
+        framePlay.add(PlayerCurrentHand2);
+        playerIndex++;
+        playerCardX+=100;
+    }
+
+    public void playerHit(){
+        String newCardValue = distributor.getPlayerHand().get(playerIndex).toString();
+        ImageIcon setTwos = new ImageIcon(DisplayCard(newCardValue, null));
+        JLabel PlayerCurrentHand1 = new JLabel(setTwos);
+        PlayerCurrentHand1.setBounds(playerCardX, 240, 90, 115);
+        playerIndex++;
+        playerCardX+=100;
     }
     /*public void DisplayCard(Card c){
         char face = c.getCardFace();

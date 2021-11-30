@@ -1,2 +1,7 @@
-package blackjack;public class HitMessage {
+package blackjack;
+
+public class HitMessage implements Message{
+    public String value(){
+        return null;
+    }
 }
