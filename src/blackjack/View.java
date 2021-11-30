@@ -89,7 +89,6 @@ public class View extends JFrame {
 
             //displays Player card 1
             String cardValue1 = distributor.getPlayerHand().get(0).toString();
-            System.out.println(cardValue1);
             ImageIcon HandOne = null;
             ImageIcon setTwos = new ImageIcon(DisplayCard(cardValue1, HandOne));
             JLabel PlayerCurrentHand1 = new JLabel(setTwos);
@@ -97,7 +96,6 @@ public class View extends JFrame {
 
             //displays Player card 2
             String cardValue2 = distributor.getPlayerHand().get(1).toString();//grabs players second hand
-            System.out.println(cardValue2);
             ImageIcon HandTwo = null;
             ImageIcon set2Hand = new ImageIcon(DisplayCard(cardValue2, HandTwo));
             JLabel PlayerCurrentHand2 = new JLabel(set2Hand);
@@ -105,11 +103,16 @@ public class View extends JFrame {
 
             //displays Dealer card1
             String dealerCardValue1 = distributor.getDealerHand().get(0).toString();//grabs dealers first hand
-            System.out.println(dealerCardValue1);
             ImageIcon DealerHandOne = null;
             ImageIcon setDealer1Hand = new ImageIcon(DisplayCard(dealerCardValue1, DealerHandOne));
             JLabel DealerHand1 = new JLabel(setDealer1Hand);
             DealerHand1.setBounds(250, 75, 90, 115);
+
+            //displays Dealer face down card initial
+            ImageIcon facedownDealer = new ImageIcon("cards/dealerfacedowncardiniital.png");
+            ImageIcon scaledcardfacedown = new ImageIcon(facedownDealer.getImage().getScaledInstance(84, 115, Image.SCALE_DEFAULT));
+            JLabel facedownD = new JLabel(scaledcardfacedown);
+            facedownD.setBounds(350, 75, 90, 115);
 
             JLabel DealerTotalHandValue = new JLabel("Dealer Total Hand: " + distributor.getTotal(distributor.getDealerHand()));//displays dealers total hand
             DealerTotalHandValue.setBounds(400, 23, 121, 34);
@@ -134,6 +137,7 @@ public class View extends JFrame {
             framePlay.add(PlayerCurrentHand1);
             framePlay.add(PlayerCurrentHand2);
             framePlay.add(DealerHand1);
+            framePlay.add(facedownD);
             framePlay.add(labelPlay);
             framePlay.setLayout(null);
             framePlay.setSize(700, 500);//size of playing table
@@ -215,16 +219,5 @@ public class View extends JFrame {
         char face = c.getCardFace();
     }*/
 }
-    class view {
-
-        public void win() {
-        }
-
-        public void loss() {
-        }
-
-        public void draw() {
-        }
-    }
 
 

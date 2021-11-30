@@ -1,6 +1,7 @@
 package test;
 
-import blackjack.*;
+import blackjack.Card;
+import blackjack.CardDistributor;
 import org.junit.Test;
 
 import java.util.ArrayList;
