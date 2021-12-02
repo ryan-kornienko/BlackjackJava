@@ -3,14 +3,13 @@ package blackjack;
 import javax.swing.event.*;
 import java.util.ArrayList;
 import java.util.Random;
-import java.util.Scanner;
 
 public class CardDistributor {
-    private ArrayList<ChangeListener> listeners; //list of listeners that are added a CardDistributor object
+    private final ArrayList<ChangeListener> listeners; //list of listeners that are added a CardDistributor object
     private ArrayList<Card> deck; //collection of 52 cards, four of each possible CardFace
     private ArrayList<Card> playerHand; //list of the cards in the player's hand
     private ArrayList<Card> dealerHand; //list of the cards in the dealer's hand
-    char[] faces = {'2', '3', '4', '5', '6', '7', '8', '9', '0', 'J', 'Q', 'K', 'A'}; //list of all possible faces for the card
+    char[] faces = {'2', '3', '4', '5', '6', '7', '8', '9', 'T', 'J', 'Q', 'K', 'A'}; //list of all possible faces for the card
     Random randomizer; //Random object that is responsible for generating random indexes to remove from the deck
     String result; //String object that stores the result as a string that can be used by the UI
 
@@ -27,9 +26,10 @@ public class CardDistributor {
     }
 
     public void initialization () throws Exception {
-        for(int j = 0; j < faces.length; j++) //fill the deck with four of each face
-            for(int i = 0; i < 4; i++)
-                deck.add(new Card(faces[j]));
+        for (char face : faces) { //fill the deck with four of each face
+            for (int i = 0; i < 4; i++)
+                deck.add(new Card(face));
+        }
         playerHand.add(deck.remove(randomizer.nextInt(deck.size()))); //deal two cards to each player hand and dealer hand
         dealerHand.add(deck.remove(randomizer.nextInt(deck.size()))); //cards are removed from the deck so that there are no multiples
         playerHand.add(deck.remove(randomizer.nextInt(deck.size()))); //they are removed by generating a random index in the range of the current size of the deck
@@ -40,7 +40,6 @@ public class CardDistributor {
         playerHand.add(deck.remove(randomizer.nextInt(deck.size()))); //player is dealt a random card from the deck which is removed
         if(getTotal(playerHand) > 21) //checks if the total of the player's hand is over 21
             calcResult(); //if their hand is over 21, then the game is over and the program calculates the result (automatic loss)
-        System.out.println("CardDistributor Hit");
     }
 
     public int getTotal(ArrayList<Card> cards) {
@@ -73,11 +72,11 @@ public class CardDistributor {
         int dealerTot = getTotal(dealerHand); //retrieving the totals of the player and dealer
         int playerTot = getTotal(playerHand);
         if((playerTot > 21 || dealerTot > playerTot) && dealerTot <= 21) //player loses if the player folds (over 21) or if the dealer has a better/higher hand than the player and the dealer has a hand less than or equal to 21
-            result = "You Lose\nTry Again!";
+            result = "You Lose! Try Again!";
         else if(dealerTot > 21 || dealerTot < playerTot) //player wins if the dealer folds (over 21) or if the player has a better/higher hand than the dealer
-            result = "You Win\nGreat Job!";
+            result = "You Win! Great Job!";
         else //player and dealer draw if neither hands are better than each other
-            result =  "Draw\nTry Again!";
+            result =  "Draw! Try Again!";
         ChangeEvent event = new ChangeEvent(this); //listeners will be notified when the game is over
         for(ChangeListener c : listeners) {
             c.stateChanged(event);
@@ -92,44 +91,5 @@ public class CardDistributor {
     }
     public String getResult(){
         return result;
-    }
-
-    public static void main(String[] args) throws Exception {
-        boolean playAgain = true;
-        while (playAgain) {
-            CardDistributor distributor = new CardDistributor();
-            distributor.initialization();
-            System.out.println("Player Hand: " + distributor.getPlayerHand());
-            System.out.println("Player total: " + distributor.getTotal(distributor.getPlayerHand()));
-
-            System.out.println("Dealer First Card: " + distributor.getDealerHand().get(0));
-            System.out.println("Enter H for hit S for stand");
-            Scanner s = new Scanner(System.in);
-            String choice = s.next();
-            while (!choice.equals("S")) {
-                if (choice.equals("H")) {
-                    distributor.playerHit();
-                    System.out.println("*HIT*\nNew Player Hand: " + distributor.getPlayerHand());
-                    System.out.println("New Player total: " + distributor.getTotal(distributor.getPlayerHand()));
-                    if (distributor.getTotal(distributor.getPlayerHand()) > 21)
-                        break;
-                }
-                choice = s.next();
-            }
-            System.out.println("Final Player total: " + distributor.getTotal(distributor.getPlayerHand()));
-            if(distributor.getTotal(distributor.getPlayerHand()) <= 21) {
-                System.out.println("Dealer Hand: " + distributor.getDealerHand());
-                System.out.println("Dealer total: " + distributor.getTotal(distributor.getDealerHand()));
-                distributor.playDealer();
-                System.out.println("Final Dealer Hand: " + distributor.getDealerHand());
-                System.out.println("Final Dealer total: " + distributor.getTotal(distributor.getDealerHand()));
-            }
-            System.out.println(distributor.getResult());
-            System.out.println("Play Again?\nY or N");
-            if(s.next().equals("N")){
-                playAgain = false;
-            }
-        }
-        System.out.println("Thank you for playing");
     }
 }

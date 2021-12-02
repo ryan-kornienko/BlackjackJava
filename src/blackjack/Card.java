@@ -1,7 +1,7 @@
 package blackjack;
 
 public class Card {
-    private char cardFace;
+    private final char cardFace;
     private int value;
 
     public Card(char cardFace) throws Exception {
@@ -34,7 +34,7 @@ public class Card {
             case '9':
                 value = 9;
                 break;
-            case '0': //0 represents card face 10
+            case 'T': //0 represents card face 10
             case 'J': //jack, queen, and king face cards all have a value of 10
             case 'Q':
             case 'K':
